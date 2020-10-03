@@ -14,9 +14,6 @@ import java.nio.channels.ReadableByteChannel;
 @AllArgsConstructor
 public class Downloader {
 
-    public static final String FILE_URL = "http://snap.stanford.edu/data/amazon/productGraph/categoryFiles/reviews_Electronics_5.json.gz";
-    public static final String FILE_NAME = "reviews_Electronics_5.json.gz";
-
     /**
      * Download file.
      */
