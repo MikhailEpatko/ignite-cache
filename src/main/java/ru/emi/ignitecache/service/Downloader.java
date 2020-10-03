@@ -20,16 +20,18 @@ public class Downloader {
     /**
      * Download file.
      */
-    public boolean download() {
-        try (InputStream in = new URL(FILE_URL).openStream();
+    public boolean download(String sourcePath, String destinationPath) {
+        log.info("Start download file: {} to: {}", sourcePath, destinationPath);
+        try (InputStream in = new URL(sourcePath).openStream();
              ReadableByteChannel readableByteChannel = Channels.newChannel(in);
-             FileOutputStream fileOutputStream = new FileOutputStream(FILE_NAME);
+             FileOutputStream fileOutputStream = new FileOutputStream(destinationPath);
              FileChannel fileChannel = fileOutputStream.getChannel()) {
-            fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+            fileChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
         } catch (Exception e) {
-            log.error("-----> Error download files: ", e);
+            log.error("Error download file: {} to: {}", sourcePath, destinationPath, e);
             return false;
         }
+        log.info("Finish download file: {} to: {}", sourcePath, destinationPath);
         return true;
     }
 }
