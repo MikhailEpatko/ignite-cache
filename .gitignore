@@ -1,8 +1,7 @@
-.idea/
 *.iml
 
 
-log/
+/log/
 
 *.jar
 *.war
@@ -11,5 +10,6 @@ log/
 *.tar.gz
 *.rar
 
-target/
-ignite/
+/target/
+/ignite/
+/.idea/

@@ -3,5 +3,18 @@ package ru.emi.ignitecache.enums;
 public enum Property {
 
     SOURCE_PATH,
-    WORK_DIR
+    WORK_DIR,
+    DESTINATION_FILE_NAME,
+
+    TIME_ZONE,
+    FIXED_DELAY_IN_HOURS,
+    START_MINUTE,
+
+    ACTIVITY_CACHE,
+    REVIEW_CACHE,
+
+    REVIEW_REPOSITORY,
+
+    FAILED_DOWNLOADS_REPEAT_TIMES,
+    FAILED_DOWNLOADS_REPEAT_INTERVAL
 }
