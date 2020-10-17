@@ -24,7 +24,6 @@ public class StartService implements Service {
     @IgniteInstanceResource
     private transient Ignite ignite;
     private transient ScheduledExecutorService scheduledExecutor;
-    private final Gson gson = new Gson();
 
     @Override
     public void init(ServiceContext ctx) {
@@ -40,6 +39,7 @@ public class StartService implements Service {
         FileParser fileParser = new FileParser(activityRepository);
         CacheRepository<String, Review> reviewRepository = ignite.services()
             .serviceProxy(PROPERTIES.get(REVIEW_REPOSITORY), CacheRepository.class, false);
+        Gson gson = new Gson();
 
         Runnable worker = () -> {
             log.info("-----> Start job.");
@@ -50,6 +50,7 @@ public class StartService implements Service {
                 }
                 String destinationFilePath = PROPERTIES.get(WORK_DIR) + PROPERTIES.get(DESTINATION_FILE_NAME);
                 downloader.startDownloadJob(PROPERTIES.get(SOURCE_PATH), destinationFilePath);
+                assert reviewRepository != null;
                 fileParser.parse(destinationFilePath, line -> gson.fromJson(line, Review.class), reviewRepository::save);
                 log.info("-----> Finish job.");
             } catch (Exception e) {

@@ -1,6 +1,5 @@
 package ru.emi.ignitecache.service;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileOutputStream;
@@ -48,17 +47,17 @@ public class Downloader {
     }
 
     public boolean downloadFile(String sourcePath, String destinationPath) {
-        log.info("Start download file: {} to: {}", sourcePath, destinationPath);
+        log.info("-----> Start download file: {} to: {}", sourcePath, destinationPath);
         try (InputStream in = new URL(sourcePath).openStream();
              ReadableByteChannel readableByteChannel = Channels.newChannel(in);
              FileOutputStream fileOutputStream = new FileOutputStream(destinationPath);
              FileChannel fileChannel = fileOutputStream.getChannel()) {
             fileChannel.transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
         } catch (Exception e) {
-            log.error("Error download file: {} to: {}", sourcePath, destinationPath, e);
+            log.error("-----> Error download file: {} to: {}", sourcePath, destinationPath, e);
             return false;
         }
-        log.info("Finish download file: {} to: {}", sourcePath, destinationPath);
+        log.info("-----> Finish download file: {} to: {}", sourcePath, destinationPath);
         return true;
     }
 }
