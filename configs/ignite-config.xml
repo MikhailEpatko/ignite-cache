@@ -21,9 +21,86 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <!--
-        Alter configuration below as needed.
-    -->
-    <bean id="grid.cfg" class="org.apache.ignite.configuration.IgniteConfiguration"/>
+       http://www.springframework.org/schema/beans/spring-beans.xsd"
+       xmlns:p="http://www.springframework.org/schema/p">
+
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"
+        p:targetObject="#{@systemProperties}" p:targetMethod="setProperty"
+        p:arguments="#{{'java.net.preferIPv4Stack','true'}}"/>
+  <bean id="grid.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+    <property name="peerClassLoadingEnabled" value="false"/>
+    <property name="discoverySpi">
+      <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+        <property name="ipFinder">
+          <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">
+            <property name="addresses">
+              <list>
+                <value>127.0.0.1:47500</value>
+              </list>
+            </property>
+          </bean>
+        </property>
+      </bean>
+    </property>
+    <property name="serviceConfiguration">
+      <list>
+        <bean class="org.apache.ignite.services.ServiceConfiguration">
+          <property name="name" value="ReviewRepository"/>
+          <property name="maxPerNodeCount" value="1"/>
+          <property name="service" ref="reviewRepository"/>
+          <property name="nodeFilter">
+            <bean class="org.apache.ignite.util.AttributeNodeFilter">
+              <constructor-arg value="Role"/>
+              <constructor-arg value="service-node"/>
+            </bean>
+          </property>
+        </bean>
+        <bean class="org.apache.ignite.services.ServiceConfiguration">
+          <property name="name" value="StartService"/>
+          <property name="maxPerNodeCount" value="1"/>
+          <property name="totalCount" value="1"/>
+          <property name="service" ref="startService"/>
+          <property name="nodeFilter">
+            <bean class="org.apache.ignite.util.AttributeNodeFilter">
+              <constructor-arg value="Role"/>
+              <constructor-arg value="service-node"/>
+            </bean>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="cacheConfiguration">
+      <list>
+        <bean class="org.apache.ignite.configuration.CacheConfiguration">
+          <property name="name" value="activity_cache"/>
+          <property name="cacheMode" value="PARTITIONED"/>
+          <property name="backups" value="1"/>
+          <property name="statisticsEnabled" value="true"/>
+        </bean>
+        <bean class="org.apache.ignite.configuration.CacheConfiguration">
+          <property name="name" value="review_cache"/>
+          <property name="cacheMode" value="PARTITIONED"/>
+          <property name="backups" value="1"/>
+          <property name="statisticsEnabled" value="true"/>
+        </bean>
+      </list>
+    </property>
+    <property name="userAttributes">
+      <map>
+        <entry key="Role" value="service-node"/>
+      </map>
+    </property>
+    <property name="dataStorageConfiguration">
+      <bean class="org.apache.ignite.configuration.DataStorageConfiguration">
+        <property name="defaultDataRegionConfiguration">
+          <bean class="org.apache.ignite.configuration.DataRegionConfiguration">
+            <property name="name" value="Default_Region"/>
+            <property name="maxSize" value="#{4L * 1024 * 1024 * 1024}"/>
+          </bean>
+        </property>
+      </bean>
+    </property>
+  </bean>
+  <bean id="reviewRepository" class="ru.emi.ignitecache.repository.ReviewRepository"/>
+  <bean id="startService" class="ru.emi.ignitecache.service.StartService"/>
 </beans>
