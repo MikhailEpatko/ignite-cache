@@ -24,7 +24,7 @@ public class FileParser {
     private final CacheRepository<String, Activity> activityRepository;
 
     public <T> void parse(String path, Function<? super String, T> create, Consumer<T> save) {
-        log.info("Start parsing file: {}", path);
+        log.info("-----> Start parsing file: {}", path);
         String checkSum = getChecksum(path);
         if (isNotAlreadyParsed(path, checkSum)) {
             try (FileInputStream fis = new FileInputStream(path);
@@ -37,12 +37,12 @@ public class FileParser {
                     .forEach(save);
                 activityRepository.save(new Activity(path, checkSum));
             } catch (Exception e) {
-                log.error("Error parsing file: {}", path, e);
+                log.error("-----> Error parsing file: {}", path, e);
             }
         } else {
-            log.info("File {} has been already parsed. Parsing was skip.", path);
+            log.info("-----> File {} has been already parsed. Parsing was skip.", path);
         }
-        log.info("Finish parsing file: {}", path);
+        log.info("-----> Finish parsing file: {}", path);
     }
 
     private boolean isNotAlreadyParsed(String path, String checkSum) {
@@ -58,7 +58,7 @@ public class FileParser {
             byte[] digest = md.digest();
             return DatatypeConverter.printHexBinary(digest).toUpperCase();
         } catch (Exception e) {
-            log.error("Error get checksum for the file '{}'", path, e);
+            log.error("-----> Error get checksum for the file '{}'", path, e);
         }
         return null;
     }

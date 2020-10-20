@@ -22,7 +22,7 @@ public class PropertyUtility {
 
     static {
         PROPERTIES.put(Property.SOURCE_PATH, "http://snap.stanford.edu/data/amazon/productGraph/categoryFiles/reviews_Electronics_5.json.gz");
-        PROPERTIES.put(Property.WORK_DIR, "/tmp/ignite-cache-work-dir");
+        PROPERTIES.put(Property.WORK_DIR, "/tmp/");
         PROPERTIES.put(Property.DESTINATION_FILE_NAME, "reviews_Electronics_5.json.gz");
 
         PROPERTIES.put(Property.TIME_ZONE, "Europe/Moscow");

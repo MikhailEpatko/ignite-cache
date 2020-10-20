@@ -14,7 +14,7 @@ public class FileManagerTest {
         + "test-work-dir";
 
     @Test
-    public void createIfNotExists_shouldCreateDirectoriesInWorkDirectory() {
+    public void createIfNotExists_shouldCreateWorkDirectories() {
         FileManager fileManager = new FileManager();
         boolean result = fileManager.createIfNotExists(path);
 
