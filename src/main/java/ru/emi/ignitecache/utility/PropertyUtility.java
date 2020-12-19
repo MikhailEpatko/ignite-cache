@@ -36,5 +36,7 @@ public class PropertyUtility {
 
         PROPERTIES.put(Property.FAILED_DOWNLOADS_REPEAT_TIMES, "4");
         PROPERTIES.put(Property.FAILED_DOWNLOADS_REPEAT_INTERVAL, "60000");
+
+        PROPERTIES.put(Property.LOGGER_CONFIG, "/Users/mikhailepatko/apache-ignite-2.8.1-bin/config/ignite-logback.xml");
     }
 }
